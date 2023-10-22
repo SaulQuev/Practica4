@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:pmsn2023/models/career_model.dart';
+import 'package:pmsn2023/models/popular_model.dart';
 import 'package:pmsn2023/models/task_model.dart';
 import 'package:pmsn2023/models/teacher_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -138,6 +139,18 @@ class Agenda {
     var sql = "select * from tasks where task_state = 0";
     var result = await connection!.rawQuery(sql);
     return result.map((task) => TaskModel.fromMap(task)).toList();
+  }
+
+  Future<List<PopularModel>> GETALLPOPULAR() async {
+    var conexion = await database;
+    var result = await conexion!.query('tblPopular');
+    return result.map((event) => PopularModel.fromMap(event)).toList();
+  }
+
+  Future<List<PopularModel>> GETPOPULAR(int id) async {
+    var conexion = await database;
+    var result = await conexion!.query('tblPopular', where: 'id=$id');
+    return result.map((event) => PopularModel.fromMap(event)).toList();
   }
 }
 
