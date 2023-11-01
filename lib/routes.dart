@@ -10,6 +10,7 @@ import 'package:pmsn2023/screens/item_screen.dart';
 import 'package:pmsn2023/screens/login_screen.dart';
 import 'package:pmsn2023/screens/popular_screen.dart';
 import 'package:pmsn2023/screens/provider_screen.dart';
+import 'package:pmsn2023/screens/register_screen.dart';
 import 'package:pmsn2023/screens/task_screen.dart';
 import 'package:pmsn2023/screens/teacher_screen.dart';
 
@@ -28,5 +29,6 @@ Map<String, WidgetBuilder> getRoutes() {
    // '/detail': (BuildContext context) => const DetailMovieScreen(),
     '/provider': (BuildContext context) => const ProviderScreen(),
     '/calendar': (BuildContext context) => const CalendarScreen(),
+    '/register': (BuildContext context) => const RegisterScreen()
   };
 }

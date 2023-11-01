@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmsn2023/firebase/email_auth.dart';
 import 'package:pmsn2023/styles/global_values.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final emailAuth = EmailAuth();
   @override
   Widget build(BuildContext context) {
     TextEditingController txtConUser = TextEditingController();
@@ -38,9 +40,13 @@ class _LoginScreenState extends State<LoginScreen> {
     final btnEntrar = FloatingActionButton.extended(
         icon: const Icon(Icons.login),
         label: const Text('ENTRAR'),
-        onPressed: () {
-          Navigator.pushNamed(context, '/dash');
-        });
+        onPressed: () async{
+          bool res = await emailAuth.validateUser(emailUser: txtConUser.text, pwdUser: txtConPass.text);
+          if(res ){
+            Navigator.pushNamed(context, '/dash');
+          }
+        }
+        );
 
     return Scaffold(
       body: Container(
@@ -57,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
+              
               Container(
                 height: 250,
                 margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -90,9 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   } else {
                                     prefs.setBool('isLogged', false);
                                   }
-                                })
+                                }),
+                                TextButton(
+                                  onPressed: ()=>Navigator.pushNamed(context,'/register'),
+                                  child: Text('Registrarme', 
+                                    style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 53, 53, 250),decoration: TextDecoration.underline )))   
                           ],
                         );
+                        
                       })
                 ]),
               ),
