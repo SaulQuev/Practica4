@@ -34,93 +34,96 @@ class _PopularScreenState extends State<PopularScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text("Peliculas Populares"),),
-      body: FutureBuilder(
-        future: flag.getupdatePosts() == true
+      body: Hero(
+        tag: 'imagenpeli',
+        child: FutureBuilder(
+          future: flag.getupdatePosts() == true
+              ? favoriteCount == 0
+                  ? agendaDB!.GETALLPOPULAR()
+                  : apiPopular!.getAllPopular()
+              : favoriteCount == 1
+                  ? agendaDB!.GETALLPOPULAR()
+                  : apiPopular!.getAllPopular(),
+          builder: (context, AsyncSnapshot<List<PopularModel>?> snapshot) {
+            if (snapshot.data != null) {
+              if (snapshot.data!.isNotEmpty) {
+                return GridView.builder(
+                  padding: const EdgeInsets.all(10),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: .8,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    PopularModel model = snapshot.data![index];
+                    if (snapshot.hasData) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      DetailMovieScreen(model: model)));
+                        },
+                        child:
+                            ItemPopularMovie(popularModel: snapshot.data![index]),
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Algo salio mal :('),
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                  itemCount: snapshot.data != null
+                      ? snapshot.data!.length
+                      : 0, //snapshot.data!.length,
+                );
+              } else {
+                return const Center(
+                  child: Text(
+                    'Esta muy vacio por aqui :|',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                );
+              }
+            }
+            return Container();
+        
+          /*future: flag.getupdatePosts()
             ? favoriteCount == 0
-                ? agendaDB!.GETALLPOPULAR()
-                : apiPopular!.getAllPopular()
+              ? agendaDB!.GETALLPOPULAR() 
+              : apiPopular!.getAllPopular()
             : favoriteCount == 1
-                ? agendaDB!.GETALLPOPULAR()
-                : apiPopular!.getAllPopular(),
-        builder: (context, AsyncSnapshot<List<PopularModel>?> snapshot) {
-          if (snapshot.data != null) {
-            if (snapshot.data!.isNotEmpty) {
+              ? agendaDB!.GETALLPOPULAR
+              : apiPopular!.getAllPopular(),
+          builder: (context, AsyncSnapshot<List<PopularModel>?> snapshot){
+            if(snapshot.hasData){
               return GridView.builder(
                 padding: const EdgeInsets.all(10),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: .8,
-                  crossAxisSpacing: 10,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, 
+                crossAxisSpacing: 10, 
+                mainAxisSpacing: 10, 
+                childAspectRatio: .9
                 ),
-                itemBuilder: (context, index) {
-                  PopularModel model = snapshot.data![index];
-                  if (snapshot.hasData) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    DetailMovieScreen(model: model)));
-                      },
-                      child:
-                          ItemPopularMovie(popularModel: snapshot.data![index]),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Algo salio mal :()'),
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-                itemCount: snapshot.data != null
-                    ? snapshot.data!.length
-                    : 0, //snapshot.data!.length,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index){
+                  return DetailMovieScreen(snapshot.data![index], context);
+                }
               );
-            } else {
-              return const Center(
-                child: Text(
-                  'Esta muy vacio por aqui :|',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              );
-            }
-          }
-          return Container();
-      
-        /*future: flag.getupdatePosts()
-          ? favoriteCount == 0
-            ? agendaDB!.GETALLPOPULAR() 
-            : apiPopular!.getAllPopular()
-          : favoriteCount == 1
-            ? agendaDB!.GETALLPOPULAR
-            : apiPopular!.getAllPopular(),
-        builder: (context, AsyncSnapshot<List<PopularModel>?> snapshot){
-          if(snapshot.hasData){
-            return GridView.builder(
-              padding: const EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, 
-              crossAxisSpacing: 10, 
-              mainAxisSpacing: 10, 
-              childAspectRatio: .9
-              ),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index){
-                return DetailMovieScreen(snapshot.data![index], context);
+            }else{
+              if(snapshot.hasError){
+                return Center(child: Text("Error al cargar los datos"),);
+              
+            }else{
+                return Center(child: CircularProgressIndicator(),);
               }
-            );
-          }else{
-            if(snapshot.hasError){
-              return Center(child: Text("Error al cargar los datos"),);
-            
-          }else{
-              return Center(child: CircularProgressIndicator(),);
             }
+          }*/
           }
-        }*/
-        }
+        ),
       )
     );
   }  

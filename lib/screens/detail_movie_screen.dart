@@ -23,8 +23,6 @@ class DetailMovieScreen extends StatefulWidget {
 class __DetailMovieScreenState extends State<DetailMovieScreen> {
   final ApiPopular apiPopular = ApiPopular();
 
-  //PopularModel? movie;
-
   @override
   Widget build(BuildContext context) {
   TestProvider flag = Provider.of<TestProvider>(context);
@@ -32,9 +30,7 @@ class __DetailMovieScreenState extends State<DetailMovieScreen> {
       appBar: AppBar(
         title: const Text('Detail Screen'),
       ),
-      body: Hero(
-        tag: widget.model.id!,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -66,11 +62,14 @@ class __DetailMovieScreenState extends State<DetailMovieScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.all(5),
-                            height: 200,
-                            width: 100,
-                            child: Image.network('https://image.tmdb.org/t/p/w500/${widget.model.posterPath}'),
+                          Hero(
+                            tag: 'imagenpeli',
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              height: 200,
+                              width: 100,
+                              child: Image.network('https://image.tmdb.org/t/p/w500/${widget.model.posterPath}'),
+                            ),
                           ),
                           Container(
                             child: RatingBar(
@@ -188,31 +187,7 @@ class __DetailMovieScreenState extends State<DetailMovieScreen> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
-/*import 'package:flutter/material.dart';
-import 'package:pmsn2023/models/popular_model.dart';
-
-class DetailMovieScreen extends StatefulWidget {
-  const DetailMovieScreen({super.key});
-
-  @override
-  State<DetailMovieScreen> createState() => _DetailMovieScreenState();
-}
-
-class _DetailMovieScreenState extends State<DetailMovieScreen> {
-  PopularModel? movie;
-  @override
-  Widget build(BuildContext context) {
-    movie = ModalRoute.of(context)!.settings.arguments as PopularModel;
-    return Scaffold(
-      body: Center(
-        child: Text(movie!.title!),
-      ),
-    );
-  }
-}
-*/

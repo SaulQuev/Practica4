@@ -21,7 +21,7 @@ class ApiPopular {
 
   Future<String> getVideo(int id) async {
     final URL =
-        'https://api.themoviedb.org/3/movie/$id/videos?api_key=4cdb6e42e276c71ca9dbe088cc455570';
+        'https://api.themoviedb.org/3/movie/$id/videos?api_key=f675cdf338b489b41571413d3bdc4f91';
     final response = await http.get(Uri.parse(URL));
     var listVideo = jsonDecode(response.body)['results'] as List;
     if (response.statusCode == 200) {
@@ -36,7 +36,7 @@ class ApiPopular {
   }
 
   Future<List<ActorModel>?> getAllActors(PopularModel popularModel) async {
-    final URL = 'https://api.themoviedb.org/3/movie/${popularModel.id}/credits?api_key=4cdb6e42e276c71ca9dbe088cc455570';
+    final URL = 'https://api.themoviedb.org/3/movie/${popularModel.id}/credits?api_key=f675cdf338b489b41571413d3bdc4f91';
     final response = await http.get(Uri.parse(URL));
     if (response.statusCode == 200) {
       var listActor = jsonDecode(response.body)['cast'] as List;
